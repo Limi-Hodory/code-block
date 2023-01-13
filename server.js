@@ -1,18 +1,16 @@
-//TODO :
-// define web socket
-// creat array for all users
-// choose events for web socket: login, R W
-require('dotenv').config()
-const express = require('express');
 
+// define env
+require('dotenv').config()
+
+const express = require('express');
 const app = express();
 
 app.use(express.static('./build'));
+
 // import & create http server
 const httpServer = require('http').createServer(app);
 // import socket-io js files
 const socket = require('socket.io');
-
 const mongoose = require('mongoose');
 const CodeModel = require('./codeModel');
 
@@ -26,8 +24,6 @@ const codeData = {
 
 
 function write(messageBody){
-    //TODO send teacher the code
-    //console.log("send to client " + messageBody);
     for( let i = 0; i < clientSocketArr.length; i++){
         clientSocketArr[i].emit("clientwritecode", messageBody)
     }
@@ -51,10 +47,8 @@ function write(messageBody){
 }
     
 // will run every time that someone login
-// 
 function handleClientSocket(clientSocket){
-   
-    
+
     clientSocket.on("login", function(message){
         codeData.subject = message;
         console.log("added socket", clientSocket.id);
@@ -71,6 +65,7 @@ function handleClientSocket(clientSocket){
 }
 socketServer.on("connection", handleClientSocket);
 
+// DB
 db_password = "1qu2xSk3JIg0ikci"
 db_user = "limihodory"
 const dbUrl = `mongodb+srv://${db_user}:${db_password}@cluster0.4idia0u.mongodb.net/codedb?retryWrites=true&w=majority`;
